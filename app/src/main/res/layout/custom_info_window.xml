@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="100dp"
+    android:background="@drawable/info_window_background"
+    android:padding="2dp">
+
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="User Name"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"/>
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="Location"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"/>
+</LinearLayout>

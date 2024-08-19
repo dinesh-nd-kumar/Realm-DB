@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"/>
+    <RelativeLayout
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/Map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility = "visible"
+        tools:context=".view.MapsActivity" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ButtonBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="74dp"
+        android:layout_marginStart="40dp"
+        android:clickable="true"
+        map:srcCompat="@drawable/navigate_before" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ButtonNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="74dp"
+        android:clickable="true"
+        map:srcCompat="@drawable/navigate_next" />
+
+    <ImageButton
+        android:id="@+id/ButtonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/white"
+        android:layout_alignParentStart="true"
+        map:srcCompat="@drawable/arrow_back" />
+        <ImageButton
+            android:id="@+id/ButtonSwitchUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/white"
+            map:srcCompat="@drawable/switch_account"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    </ViewFlipper>
+
+</RelativeLayout>
