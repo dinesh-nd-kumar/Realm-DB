@@ -2,3 +2,4 @@
 ![Screenshot_2024_0820_165812](https://github.com/user-attachments/assets/14753b17-faa2-4512-bd54-f0dc108a76d6)
 ![Screenshot_2024_0820_164830](https://github.com/user-attachments/assets/1904a7f9-7ed2-4288-a44a-c0262944cae7)
 ![Screenshot_2024_0820_164802](https://github.com/user-attachments/assets/c4fd10c7-0c60-4ebb-8c4b-db8ddafbdf5c)
+![Screenshot_2024_0820_172938](https://github.com/user-attachments/assets/4173028c-3427-47bc-9bc4-24f54b417c55)
