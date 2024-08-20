@@ -50,7 +50,8 @@ class LocationAdapter(val clickListener: ItemClickListener, var locationList: Li
 
                 val dateString = formatter.format(Date(loca.time?:0));
                 tvAddress.text = dateString
-                index.text = "$adapterPosition. ${loca.userId}"
+//                index.text = "$adapterPosition. ${loca.userId}"
+                index.text = "${adapterPosition +1}"
                 root.setOnClickListener{
                     clickListener.onItemClick(adapterPosition)
                 }

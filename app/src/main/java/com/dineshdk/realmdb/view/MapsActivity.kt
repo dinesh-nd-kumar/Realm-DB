@@ -53,6 +53,7 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
     private lateinit var geoCoder : Geocoder
 
     private lateinit var locationAdapter: LocationAdapter
+
     val formatter = SimpleDateFormat("dd/MM hh:mm");
 
     private fun doWork(){
@@ -76,6 +77,7 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
             startActivity(intent)
             finish()
         }else{
+            SessionData.userid = cUser.getId()
             doWork()
         }
         geoCoder = Geocoder(this)
@@ -85,17 +87,17 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
             .findFragmentById(R.id.Map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val results: RealmResults<UserLocation> = realm.where<UserLocation>().findAll()
+//        val results: RealmResults<UserLocation> = realm.where<UserLocation>().findAll()
 
         // Copying results to avoid Lazy Loading issues
 //        userLocationList = realm.copyFromRealm(results) as ArrayList<UserLocation>
 
 //        userLocationList = realm.where(UserLocation::class.java).equalTo("userId",cUser.getId()).findAll()
-        userLocationList = realm.where(UserLocation::class.java).findAllAsync()
+//        userLocationList = realm.where(UserLocation::class.java).findAllAsync()
         setRecycler()
-        userLocationList.addChangeListener { results, changeSet ->
-            locationAdapter.notifyDataSetChanged()
-        }
+//        userLocationList.addChangeListener { results, changeSet ->
+//            locationAdapter.notifyDataSetChanged()
+//        }
 
         binding.ButtonBefore.setOnClickListener {
             moveBefore()
@@ -110,7 +112,7 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
         binding.ButtonSwitchUser.setOnClickListener {
             customSwitchUserDialog()
         }
-        availUsersEmail = realm.where(User::class.java).findAll().map { it.email!! }
+
 
 
 
@@ -120,30 +122,37 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        val results: RealmResults<User> = realm.where<User>().findAll()
+        availUsersEmail = realm.copyFromRealm(results).map { it.email!! }
+//        availUsersEmail = realm.where(User::class.java).findAll().map { it.email!! }
+    }
+
     private fun moveNext(){
-        if(markerIndex == userLocationList.size-1){
-            moveMarker(LatLng(userLocationList[markerIndex]?.lat!!, userLocationList[markerIndex]?.lon!!),true)
+        if(markerIndex == mViewModel.getUserLocationList().size-1){
+            moveMarker(LatLng(mViewModel.getUserLocationList()[markerIndex]?.lat!!, mViewModel.getUserLocationList()[markerIndex]?.lon!!),true)
             return
         }
         markerIndex++
-        moveMarker(LatLng(userLocationList[markerIndex]?.lat!!, userLocationList[markerIndex]?.lon!!))
+        moveMarker(LatLng(mViewModel.getUserLocationList()[markerIndex]?.lat!!, mViewModel.getUserLocationList()[markerIndex]?.lon!!))
 
 
     }
 
     private fun moveBefore(){
         if(markerIndex == 0){
-            moveMarker(LatLng(userLocationList[markerIndex]?.lat!!, userLocationList[markerIndex]?.lon!!),true)
+            moveMarker(LatLng(mViewModel.getUserLocationList()[markerIndex]?.lat!!, mViewModel.getUserLocationList()[markerIndex]?.lon!!),true)
             return
         }
         markerIndex--
-        moveMarker(LatLng(userLocationList[markerIndex]?.lat!!, userLocationList[markerIndex]?.lon!!))
+        moveMarker(LatLng(mViewModel.getUserLocationList()[markerIndex]?.lat!!, mViewModel.getUserLocationList()[markerIndex]?.lon!!))
     }
 
 
     private fun setRecycler(){
         binding.rv.apply {
-            locationAdapter = LocationAdapter(this@MapsActivity,userLocationList, geoCoder)
+            locationAdapter = LocationAdapter(this@MapsActivity,mViewModel.getUserLocationList(), geoCoder)
             adapter = locationAdapter
             layoutManager = LinearLayoutManager(this@MapsActivity)
 
@@ -163,7 +172,7 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
         val sydney = LatLng(-34.0, 151.0)
 //        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        maker = mMap.addMarker(MarkerOptions().position(sydney).title("user"))!!
+        mViewModel.maker = mMap.addMarker(MarkerOptions().position(sydney).title("user"))!!
         mMap.setInfoWindowAdapter(this)
 
 
@@ -175,13 +184,13 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
 //        showMap()
         binding.viewFlipper.displayedChild = 1
         markerIndex = position
-        moveMarker(LatLng(userLocationList[position]?.lat!!, userLocationList[position]?.lon!!),true)
+        moveMarker(LatLng(mViewModel.getUserLocationList()[position]?.lat!!, mViewModel.getUserLocationList()[position]?.lon!!),true)
 
     }
 
     private fun moveMarker(latLng: LatLng, doZoom: Boolean = false){
-        maker.position = latLng
-        maker.showInfoWindow();
+        mViewModel.maker.position = latLng
+        mViewModel.maker.showInfoWindow();
 
         if (doZoom){
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
@@ -200,29 +209,13 @@ class MapsActivity : LocationActivity(), OnMapReadyCallback,InfoWindowAdapter,
     }
 
     override fun getInfoWindow(p0: Marker): View? {
-        val dateString = formatter.format(userLocationList[markerIndex]?.time!!)
+        val dateString = formatter.format(mViewModel.getUserLocationList()[markerIndex]?.time!!)
         infoWBinding.tvLocation.text = dateString
         infoWBinding.tvUser.text = cUser.getName()
         return infoWBinding.root
     }
 
-    private fun showMap(){
-        binding.rv.visibility = View.INVISIBLE
-        binding.ButtonNext.visibility = View.VISIBLE
-        binding.ButtonBefore.visibility = View.VISIBLE
-        binding.mapview.visibility = View.VISIBLE
-        binding.ButtonBack.visibility = View.VISIBLE
 
-    }
-
-    private fun showList(){
-        binding.rv.visibility = View.VISIBLE
-        binding.ButtonNext.visibility = View.INVISIBLE
-        binding.ButtonBefore.visibility = View.INVISIBLE
-        binding.mapview.visibility = View.INVISIBLE
-        binding.ButtonBack.visibility = View.INVISIBLE
-
-    }
 
     private fun switchUser() {
         cUser.inValidateCurrentUser()

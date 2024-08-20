@@ -12,6 +12,7 @@ import com.dineshdk.realmdb.R
 import com.dineshdk.realmdb.Model.User
 import com.dineshdk.realmdb.others.SessionData.loginUserEmail
 import com.dineshdk.realmdb.databinding.FragmentLoginBinding
+import com.dineshdk.realmdb.others.SessionData
 import com.dineshdk.realmdb.repo.CurrentUser
 import io.realm.Realm
 
@@ -59,8 +60,9 @@ class LoginFragment : Fragment() {
                 val availUser = availUsers[0]
 
                 if (pass == availUser?.password){
+                    SessionData.userid = availUser.id
 
-                        CurrentUser(requireContext())
+                    CurrentUser(requireContext())
                             .setUser(availUser)
                         val intent = Intent(context, MapsActivity::class.java)
                         startActivity(intent)

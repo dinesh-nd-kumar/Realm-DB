@@ -16,6 +16,7 @@ import com.dineshdk.realmdb.others.Constant.USER_ID
 import com.dineshdk.realmdb.others.Constant.USER_PREF
 import com.dineshdk.realmdb.others.Constant.USER_NAME
 import com.dineshdk.realmdb.databinding.FragmentSignUpBinding
+import com.dineshdk.realmdb.others.SessionData
 import io.realm.Realm
 
 
@@ -83,6 +84,7 @@ class SignUpFragment : Fragment() {
 //                            it.insert(userLocation)
                             it.insert(user)
                         }
+                        SessionData.userid = nextId
 
                         val userPref = requireContext().getSharedPreferences(USER_PREF,MODE_PRIVATE)
                         val editor = userPref.edit()

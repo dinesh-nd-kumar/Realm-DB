@@ -7,6 +7,7 @@ import com.dineshdk.realmdb.others.Constant.USER_EMAIL
 import com.dineshdk.realmdb.others.Constant.USER_ID
 import com.dineshdk.realmdb.others.Constant.USER_NAME
 import com.dineshdk.realmdb.others.Constant.USER_PREF
+import com.dineshdk.realmdb.others.SessionData
 
 class CurrentUser(val context: Context) {
     private var userPref : SharedPreferences
@@ -38,6 +39,7 @@ class CurrentUser(val context: Context) {
     }
 
     fun inValidateCurrentUser(){
+        SessionData.userid = -1
         val et = userPref.edit()
         et.clear()
         et.commit()
